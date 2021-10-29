@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.example.demo.model.Laptop;
@@ -16,7 +17,7 @@ public class Database {
 	private final static String password = "asdasd";
 	private final static String table = "tb_laptop";
 
-	public static Connection connect() {
+	public static Connection connect(){
 		Connection conn = null;
 		try {
 			conn = DriverManager.getConnection(url, user, password);
@@ -27,17 +28,16 @@ public class Database {
 		return conn;
 	}
 	
-	public void selectInfo() {
+	public ArrayList<Laptop> findAll() {
 		Statement stmt = null;
 		Connection conn = connect();
+		ArrayList<Laptop> list = new ArrayList<Laptop>();
 		try {
 			stmt = conn.createStatement();
 			conn.setAutoCommit(false);
 	         ResultSet rs = stmt.executeQuery("SELECT * FROM " + table + " ORDER BY id ASC"); 
 	         while (rs.next()) {
-                System.out.println(String.format("%s-%s",
-                        rs.getInt("id"),
-                        rs.getString("info")));
+				list.add(new Laptop(rs.getInt("id"), rs.getString("brand"), rs.getDouble("price")));
 			}
 	         rs.close();
 	         stmt.close();
@@ -46,9 +46,11 @@ public class Database {
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
+
+		return list;
 	}
 	
-	public Object find(int id) {
+	public HashMap<String, Object> find(int id) {
 		Statement stmt = null;
 		Connection conn = connect();
 		HashMap<String, Object> map = new HashMap<String, Object>();

@@ -3,6 +3,7 @@
  */
 package com.example.demo.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.example.demo.connect.Database;
@@ -29,6 +30,14 @@ public class LaptopController {
 		return "laptop";
 	}
 
+	@RequestMapping(value = "/findAll", method = RequestMethod.GET)
+	@ResponseBody
+	public ArrayList<Laptop> findAll() {
+		ArrayList<Laptop> list = db.findAll();
+
+		return list;
+	}
+
 	@RequestMapping(value = "/create", method = RequestMethod.POST)
 	@ResponseBody
 	public Object create(Laptop laptop) {
@@ -42,9 +51,8 @@ public class LaptopController {
 
 	@RequestMapping(value = "/edit", method = RequestMethod.PUT)
 	@ResponseBody
-	@SuppressWarnings("unchecked")
 	public Object edit(@RequestParam(value = "id") int id, @RequestParam(value = "brand", defaultValue = "-") String brand, @RequestParam(value = "price", defaultValue = "0") Double price) {
-		HashMap<String, Object> map1  = (HashMap<String, Object>) db.find(id);
+		HashMap<String, Object> map1  = db.find(id);
 
 		Double mapPriceDouble = (Double) map1.get("price");
 
@@ -65,6 +73,13 @@ public class LaptopController {
 		HashMap<String, Object> map2  = new HashMap<String, Object>();
 		map2.put("msg", "Edit laptop success");
 		return map2;
+	}
+
+	@RequestMapping(value = "/find", method = RequestMethod.GET)
+	@ResponseBody
+	public Object find(@RequestParam(value = "id") int id) {
+		HashMap<String, Object> map  = db.find(id);
+		return map;
 	}
 
 	@RequestMapping(value = "/delete", method = RequestMethod.DELETE)
