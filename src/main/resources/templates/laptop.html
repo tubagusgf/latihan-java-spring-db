@@ -1,12 +1,51 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
-</head>
+<title>Main</title>
+
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
+
+    * {
+        font-family: 'Montserrat';
+    }
+</style>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/themes/redmond/jquery-ui.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/free-jqgrid/4.15.5/css/ui.jqgrid.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/free-jqgrid/4.15.5/jquery.jqgrid.min.js"></script>
+<script>
+//<![CDATA[
+$(function () {
+    "use strict";
+    $("#grid").jqGrid({
+        caption: "LAPTOP",
+        url: "http://localhost:8080/laptop/findAll",
+        datatype: "json",
+        pager: true,
+        viewrecords: true,
+        rowNum: 5,
+        colNames: [
+            'ID', 'Brand', 'Price', 'Created At'
+        ],
+        colModel: [
+            { name: "id"},
+            { name: "brand"},
+            { name: "price"},
+            { name: "created_at", formatter: "date"}
+        ],
+    });
+});
+//]]>
+</script>
+
 <body>
 
-<h1>TES</h1>
+<h1>LAPTOP</h1>
+
+<table id="grid"></table>
 
 </body>
 </html>
